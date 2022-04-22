@@ -1,6 +1,5 @@
 use clap::Parser;
 use mtg_image_downloader::MtgCli;
-use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
 async fn main() -> color_eyre::Result<()> {
@@ -13,7 +12,7 @@ async fn main() -> color_eyre::Result<()> {
 
     console_subscriber::init();
     // tracing_subscriber::fmt()
-    //     .with_env_filter(EnvFilter::from_default_env())
+    //     .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
     //     .init();
     // tracing::debug!("Tracing initialized");
 
