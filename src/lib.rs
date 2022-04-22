@@ -13,8 +13,13 @@ pub struct MtgCli {
 }
 
 impl MtgCli {
-    pub async fn execute(self) -> Result<()> {
-        self.cmd.execute().await?;
+    pub async fn execute_async(self) -> Result<()> {
+        self.cmd.execute_async().await?;
+        Ok(())
+    }
+
+    pub fn execute(self) -> Result<()> {
+        self.cmd.execute()?;
         Ok(())
     }
 }
@@ -29,7 +34,7 @@ pub enum MtgCmd {
 }
 
 impl MtgCmd {
-    pub async fn execute(self) -> Result<()> {
+    pub async fn execute_async(self) -> Result<()> {
         match self {
             Self::Load { path } => {
                 tracing::info!("Loading AllCards.json");
@@ -37,6 +42,20 @@ impl MtgCmd {
                 println!("{cards:#?}");
 
                 nonblocking::download_images(cards).await?;
+            }
+        }
+
+        Ok(())
+    }
+
+    pub fn execute(self) -> Result<()> {
+        match self {
+            Self::Load { path } => {
+                tracing::info!("Loading AllCards.json");
+                let cards = get_cards(&path)?;
+                println!("{cards:#?}");
+
+                blocking::download_images(cards)?;
             }
         }
 

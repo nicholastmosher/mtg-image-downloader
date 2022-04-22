@@ -20,7 +20,7 @@ pub async fn download_images(cards: Vec<Card>) -> Result<()> {
 
     let (tx, rx) = flume::unbounded();
     let mut handles = vec![];
-    for i in 0..128 {
+    for i in 0..16 {
         let (progress_tx, progress_rx) = flume::unbounded();
         let bar = multibar.add(ProgressBar::new(1));
         bar.set_style(style.clone());
